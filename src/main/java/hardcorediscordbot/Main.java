@@ -1,13 +1,18 @@
 package hardcorediscordbot;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.Scanner;
 
 import org.javacord.api.DiscordApi;
 import org.javacord.api.DiscordApiBuilder;
 
 public class Main {
+	private static String token;
+	
 	public static void main(String[] args) {
-        // Insert your bot's token here
-        String token = "ODE0MjIwOTU5NDAwODUzNTU2.YDasXA._oNNnqtCLxaRB0-bMGtmt7y21v8";
+		loadToken();
+		System.out.println(token);
 
         DiscordApi api = new DiscordApiBuilder().setToken(token).login().join();
         
@@ -21,7 +26,7 @@ public class Main {
         api.addMessageCreateListener(event -> {
         	String message = event.getMessageContent();
         	if (message.contains("/death")) {
-        		event.getChannel().sendMessage(message.substring(6) + " Has died! This means the server will reset, and attempt #X will begin shortly! " + event.getChannel());
+        		event.getChannel().sendMessage(message.substring(6) + " has died! This means the server will reset, and attempt #X will begin shortly! " + event.getChannel());
         		
         		ChangeMinecraftWorld.main("Test");
         	}
@@ -30,4 +35,17 @@ public class Main {
         // Print the invite url of your bot
         System.out.println("You can invite the bot by using the following url: " + api.createBotInvite());
     }
+	
+	private static void loadToken() {
+		try {
+			Scanner scanner = new Scanner(new File("src/main/resources/api_key.txt"));
+
+			token = scanner.nextLine();
+			
+			scanner.close();
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 }
