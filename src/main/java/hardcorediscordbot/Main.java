@@ -10,7 +10,7 @@ public class Main {
         String token = "ODE0MjIwOTU5NDAwODUzNTU2.YDasXA._oNNnqtCLxaRB0-bMGtmt7y21v8";
 
         DiscordApi api = new DiscordApiBuilder().setToken(token).login().join();
-
+        
         // Add a listener which answers with "Pong!" if someone writes "!ping"
         api.addMessageCreateListener(event -> {
             if (event.getMessageContent().equalsIgnoreCase("$ping")) {
@@ -21,8 +21,9 @@ public class Main {
         api.addMessageCreateListener(event -> {
         	String message = event.getMessageContent();
         	if (message.contains("/death")) {
-        		
         		event.getChannel().sendMessage(message.substring(6) + " Has died! This means the server will reset, and attempt #X will begin shortly! " + event.getChannel());
+        		
+        		ChangeMinecraftWorld.main("Test");
         	}
         });
 
