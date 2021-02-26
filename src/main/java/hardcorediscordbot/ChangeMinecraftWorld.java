@@ -32,6 +32,9 @@ public class ChangeMinecraftWorld {
 		logIn(crsfToken);
 		changeWorld(crsfToken, worldName);
 		System.out.println("Changed world.");
+		
+		restartServer(crsfToken);
+		System.out.println("Restarted server.");
 	}
 	
 	private static String cropCSRFToken(String token) {
@@ -57,6 +60,14 @@ public class ChangeMinecraftWorld {
 		formData.put("YII_CSRF_TOKEN", crsfToken);
 		formData.put("ajax", "changeWorld");
 		formData.put("changeWorldName", worldName);
+		
+		post(endpointURL, formData);
+	}
+	
+	private static void restartServer(String crsfToken) {
+		HashMap<String, Object> formData = new HashMap<>();
+		formData.put("YII_CSRF_TOKEN", crsfToken);
+		formData.put("ajax", "restartFast");
 		
 		post(endpointURL, formData);
 	}
