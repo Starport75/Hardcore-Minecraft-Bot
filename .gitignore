@@ -1,3 +1,4 @@
-.settings/
-target/
-src/main/resources/
+src/main/resources/attempts.json
+src/main/resources/players.json
+src/main/resources/bot_token.txt
+src/main/resources/credentials.txt
