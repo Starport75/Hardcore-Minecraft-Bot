@@ -45,6 +45,7 @@ public class API {
 		}
 		Utility.print("CSRF Token: " + crsfToken);
 		
+		Utility.print("Logging In");
 		logIn();
 		Utility.print("Logged In");
 	}
@@ -55,7 +56,7 @@ public class API {
 	}
 	
 	private static String post(String url, Map<String, Object> data) {
-		Utility.print("POST: \"" + url + "\"");
+		//Utility.print("POST: \"" + url + "\"");
 		data.put("YII_CSRF_TOKEN", crsfToken);
 		
 		String response = session.post(url).body(data).socksTimeout(20_000).connectTimeout(30_000).send().readToText();
@@ -63,7 +64,6 @@ public class API {
 	}
 	
 	private static void logIn() {
-		Utility.print("Logging In");
 		HashMap<String, Object> formData = new HashMap<>();
 		formData.put("LoginForm[name]", username);
 		formData.put("LoginForm[password]", password);
@@ -80,14 +80,15 @@ public class API {
 		formData.put("ajax", "changeWorld");
 		formData.put("changeWorldName", worldName);
 		
-		String response = post(endpointURL, formData);
-		Utility.print("RESPONSE: " + response);
+		Utility.print("Changing World To " + worldName);
+		post(endpointURL, formData);
 	}
 	
 	static void restartServer() {
 		HashMap<String, Object> formData = new HashMap<>();
 		formData.put("ajax", "restartFast");
 		
+		Utility.print("Restart Server");
 		post(endpointURL, formData);
 	}
 	
@@ -97,6 +98,7 @@ public class API {
 		formData.put("type", "all");
 		formData.put("log_seq", "0");
 		
+		Utility.print("Getting Console");
 		String rawData = post(consoleURL, formData);
 		clearConsole();
 		
@@ -116,6 +118,7 @@ public class API {
 		formData.put("ajax", "command");
 		formData.put("command", command);
 		
+		Utility.print("Sending Console Command: \"" + command + "\"");
 		post(consoleURL, formData);
 	}
 	
@@ -123,6 +126,7 @@ public class API {
 		HashMap<String, Object> formData = new HashMap<>();
 		formData.put("ajax", "clearLog");
 		
+		Utility.print("Clearing Console");
 		post(consoleURL, formData);
 	}
 	
@@ -132,6 +136,7 @@ public class API {
 		formData.put("type", "all");
 		formData.put("log_seq", "0");
 		
+		Utility.print("Getting Chat");
 		String rawData = post(chatURL, formData);
 		clearChat();
 		
@@ -150,6 +155,7 @@ public class API {
 		HashMap<String, Object> formData = new HashMap<>();
 		formData.put("ajax", "clearChat");
 		
+		Utility.print("Clearing Chat");
 		post(chatURL, formData);
 	}
 	
@@ -159,6 +165,7 @@ public class API {
 		formData.put("type", "all");
 		formData.put("log_seq", "0");
 		
+		Utility.print("Getting Online Players");
 		String rawData = post(chatURL, formData);
 		
 		JSONParser parser = new JSONParser();

@@ -173,9 +173,9 @@ public class Main {
 		});
 
 		while (true) {
-			System.out.println("Getting possible deaths.");
+			//System.out.println("Getting possible deaths.");
 		    String[] possibleDeath = ApexHosting.getPossibleDeath();
-		    System.out.println("Getting chat messages.");
+		    //System.out.println("Getting chat messages.");
 		    ArrayList<String[]> chatMessages = ApexHosting.getChatMessages();
 
 		    if (possibleDeath != null) {

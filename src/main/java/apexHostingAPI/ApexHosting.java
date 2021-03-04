@@ -60,6 +60,9 @@ public class ApexHosting {
 				messages.add(new String[] {name, message});
 			}
 		}
+		messages.forEach(message -> {
+			Utility.print("Chat Message: \"" + message[1] + "\"");
+		});
 		return messages;
 	}
 	
