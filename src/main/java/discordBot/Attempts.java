@@ -59,7 +59,7 @@ public class Attempts {
 	}
 	
 	public Attempt currentAttempt() {
-		return attempts.get(currentAttemptNumber());
+		return attempts.get(currentAttemptNumber() - 1);
 	}
 	
 	public void readFromFile() {
