@@ -27,16 +27,18 @@ public class Players {
 	
 	public String listPlayers() {
 		ArrayList<String> playerInfo = new ArrayList<String>();
-		String format = "%s (aka %s) has caused %d server resets";
+		String format = "%s (aka %s) has caused %d server reset";
 		
 		for (Player p : players) {
 			long resets = p.getResetCount();
 			
 			// TODO: Make a static "DiscordAPI" class (or just static Main variable) for Player to reference and use to generate Discord Usernames.   
-			String info = String.format(format, p.getMinecraftUsername(), "TEMP", resets);
+			// Passing in Main.api and it being a public static variable is probably bad practice in general.
+			String info = String.format(format, p.getMinecraftUsername(), p.getDiscordName(Main.api), resets);
 			if (resets != 1) {
-				info += 's';
+				info += "s";
 			}
+			info += ".";
 			playerInfo.add(info);
 		}
 		return String.join("\n", playerInfo);

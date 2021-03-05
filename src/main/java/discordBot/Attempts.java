@@ -142,7 +142,7 @@ public class Attempts {
 		seconds = millis / 1000;
 		millis %= 1000;
 		
-		return String.format("%d days, %d hours, and %d minutes.", days, hours, minutes);
+		return String.format("%d days, %d hours, and %d minutes", days, hours, minutes);
 	}
 	
 }

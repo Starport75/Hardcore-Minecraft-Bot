@@ -20,7 +20,7 @@ import apexHostingAPI.ApexHosting;
 
 public class Main {
 	private static String token;
-	private static DiscordApi api;
+	public static DiscordApi api;
 	private static String commandPrefix = "!";
 	
 	private static String serverID = "814169786232995850";
@@ -95,7 +95,9 @@ public class Main {
 				case "death":
 					// Duplicate of the one in the main loop, consider moving to a function
 					try {
+						player = players.findPlayerWD(author.getId());
 						User discordUser = api.getUserById(player.getDiscordID()).get();
+						
 					    String format = "%s!\n\n%s has died! This means that the server will reset, and attempt %d will begin shortly!";
 					    String announcement = String.format(format, playersRole.getMentionTag(), discordUser.getMentionTag(), attempts.currentAttemptNumber() + 1);
 					    botAnnouncementChannel.sendMessage(announcement);
@@ -157,7 +159,7 @@ public class Main {
 								e.printStackTrace();
 							}
 					    	
-					        response += String.format(format, onlinePlayerName, discordUser.getMentionTag());
+					        response += String.format(format, onlinePlayerName, discordUser.getDisplayName(server));
 					    }
 					    channel.sendMessage("```" + response + "```");
 					}
