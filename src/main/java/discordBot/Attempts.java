@@ -18,6 +18,10 @@ public class Attempts {
 	private ArrayList<Attempt> attempts = new ArrayList<Attempt>();
 	private String fileName = "src/main/resources/attempts.json";
 	
+	public Attempts() {
+		readFromFile();
+	}
+	
 	public void addAttempt(Attempt attempt, Boolean changeWorld) {
 		attempts.add(attempt);
 		
@@ -31,7 +35,7 @@ public class Attempts {
 	public String listAttempts() {
 	    ArrayList<String> output = new ArrayList<String>();
 	    String format = "Attempt #%d lasted from %s until %s and was ended by %s. It lasted for %s.";
-	    for (Attempt a : attempts.subList(0, attempts.size() - 1)) {
+	    for (Attempt a : attempts.subList(0, currentAttemptNumber() - 1)) {
 	        String fString = String.format(format,
 	        							   a.getAttemptNumber(),
 	        							   a.getStartTimeString(),
@@ -70,19 +74,16 @@ public class Attempts {
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
-		JSONParser parser = new JSONParser();
 		
+		JSONParser parser = new JSONParser();
 		Object json = null;
 		try {
 			json = parser.parse(reader);
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (ParseException e) {
+		} catch (IOException | ParseException e) {
 			e.printStackTrace();
 		}
 		
 		JSONArray jsonArray = (JSONArray) json;
-		
 		for (Object item : jsonArray) {
 			JSONObject obj = (JSONObject) item;
 			

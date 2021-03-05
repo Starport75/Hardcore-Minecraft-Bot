@@ -48,9 +48,6 @@ public class Main {
 
 		ApexHosting.main();
 		
-		players.readFromFile();
-		attempts.readFromFile();
-		
 		// Print the invite url of your bot
 		System.out.println("You can invite the bot by using the following url: " + api.createBotInvite());
 		

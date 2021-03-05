@@ -16,6 +16,10 @@ public class Players {
 	private ArrayList<Player> players = new ArrayList<Player>();
 	private String fileName = "src/main/resources/players.json";
 	
+	public Players() {
+		readFromFile();
+	}
+	
 	public Player getPlayer(int index) {
 		return players.get(index);
 	}
