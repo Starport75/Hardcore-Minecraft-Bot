@@ -173,17 +173,17 @@ public class Main {
 		});
 
 		while (true) {
-			//System.out.println("Getting possible deaths.");
-		    String[] possibleDeath = ApexHosting.getPossibleDeath();
-		    //System.out.println("Getting chat messages.");
-		    ArrayList<String[]> chatMessages = ApexHosting.getChatMessages();
+			System.out.println("Updating console.");
+			ApexHosting.updateConsole();
+			System.out.println("Updating chat.");
+			ApexHosting.updateChat();
 
+			System.out.println("Getting possible deaths.");
+			String[] possibleDeath = ApexHosting.getPossibleDeath();
 		    if (possibleDeath != null) {
 		        String mcUsername = possibleDeath[0];
 		        String reason = possibleDeath[1];
 		        Player player = players.findPlayerWM(mcUsername);
-		        System.out.println(mcUsername);
-		        System.out.println(players.findPlayerWM(mcUsername));
 		        try {
 		            User discordUser = api.getUserById(player.getDiscordID()).get();
 		            String format = "%s!\n\n%s %s! This means that the server will reset, and attempt %d will begin shortly!";
@@ -198,8 +198,13 @@ public class Main {
 		        players.saveToFile();
 		        attempts.currentAttempt().endRun(mcUsername);
 		        attempts.addAttempt(new Attempt(attempts.currentAttemptNumber() + 1), true);
+		        
+		        ApexHosting.clearConsole();
+		        ApexHosting.clearChat();
 		    }
 
+		    System.out.println("Getting chat messages.");
+		    ArrayList<String[]> chatMessages = ApexHosting.getChatMessages();
 		    if (chatMessages != null) {
 		        for (String[] message : chatMessages) {
 		            String username = message[0];
@@ -221,6 +226,7 @@ public class Main {
 		        }
 		    }
 		    
+			System.out.println("[LOOP]");
 		    Thread.sleep(5000);
 		}
 	}

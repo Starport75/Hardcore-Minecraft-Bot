@@ -79,8 +79,6 @@ public class API {
 		HashMap<String, Object> formData = new HashMap<>();
 		formData.put("ajax", "changeWorld");
 		formData.put("changeWorldName", worldName);
-		
-		Utility.print("Changing World To " + worldName);
 		post(endpointURL, formData);
 	}
 	
@@ -92,15 +90,8 @@ public class API {
 		post(endpointURL, formData);
 	}
 	
-	static String getConsole() {
-		HashMap<String, Object> formData = new HashMap<>();
-		formData.put("ajax", "refresh");
-		formData.put("type", "all");
-		formData.put("log_seq", "0");
-		
-		Utility.print("Getting Console");
-		String rawData = post(consoleURL, formData);
-		clearConsole();
+	static JSONObject getLog(String url, HashMap<String, Object> formData) {
+		String rawData = post(url, formData);
 		
 		JSONParser parser = new JSONParser();
 		JSONObject data = null;
@@ -110,7 +101,27 @@ public class API {
 			e.printStackTrace();
 		}
 		
-		return (String) data.get("log");
+		return data;
+	}
+	
+	static JSONObject getConsole(int log_seq) {
+		HashMap<String, Object> formData = new HashMap<>();
+		formData.put("ajax", "refresh");
+		formData.put("type", "all");
+		formData.put("log_seq", log_seq);
+		return getLog(consoleURL, formData);	
+	}
+	
+	static JSONObject getConsole() {
+		return getConsole(0);
+	}
+	
+	static JSONObject getChat() {
+		HashMap<String, Object> formData = new HashMap<>();
+		formData.put("ajax", "refresh");
+		formData.put("type", "all");
+		formData.put("log_seq", "0");
+		return getLog(chatURL, formData);
 	}
 	
 	static void sendConsoleCommand(String command) {
@@ -122,7 +133,7 @@ public class API {
 		post(consoleURL, formData);
 	}
 	
-	private static void clearConsole() {
+	public static void clearConsole() {
 		HashMap<String, Object> formData = new HashMap<>();
 		formData.put("ajax", "clearLog");
 		
@@ -130,28 +141,7 @@ public class API {
 		post(consoleURL, formData);
 	}
 	
-	static String getChat() {
-		HashMap<String, Object> formData = new HashMap<>();
-		formData.put("ajax", "refresh");
-		formData.put("type", "all");
-		formData.put("log_seq", "0");
-		
-		Utility.print("Getting Chat");
-		String rawData = post(chatURL, formData);
-		clearChat();
-		
-		JSONParser parser = new JSONParser();
-		JSONObject data = null;
-		try {
-			data = (JSONObject) parser.parse(rawData);
-		} catch (ParseException e) {
-			e.printStackTrace();
-		}
-		
-		return (String) data.get("chat");
-	}
-	
-	private static void clearChat() {
+	public static void clearChat() {
 		HashMap<String, Object> formData = new HashMap<>();
 		formData.put("ajax", "clearChat");
 		
