@@ -52,6 +52,10 @@ public class ApexHosting {
 			}
 		}
 		
+		if (retrievedChatMessages.size() == 0) {
+			return;
+		}
+		
 		if (lastChatMessage == null) {
 			lastChatMessage = retrievedChatMessages.get(retrievedChatMessages.size() - 1);
 		}
