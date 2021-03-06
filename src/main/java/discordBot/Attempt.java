@@ -8,6 +8,9 @@ public class Attempt {
 	private long startTime;
 	private long deathTime;
 	private long successTime;
+	private String deathMessage;
+	
+	
 	
 	public Attempt(int nAttemptNumber) {
 		attemptNumber = nAttemptNumber;
@@ -17,12 +20,13 @@ public class Attempt {
 		successTime = -1;
 	}
 	
-	public Attempt(int nAttemptNumber, String nRunKiller, long nStartTime, long nDeathTime, long nSuccessTime) {
+	public Attempt(int nAttemptNumber, String nRunKiller, long nStartTime, long nDeathTime, long nSuccessTime, String nDeathMessage) {
 		attemptNumber = nAttemptNumber;
 		runKiller = nRunKiller;
 		startTime = nStartTime;
 		deathTime = nDeathTime;
 		successTime = nSuccessTime;
+		deathMessage = nDeathMessage;
 	}
 	
 	public long getAttemptNumber() {
@@ -45,6 +49,10 @@ public class Attempt {
 		return successTime;
 	}
 	
+	public String getDeathMessage() {
+		return deathMessage;
+	}
+	
 	private String getTimeString(long millis) {
 		Calendar calendar = Calendar.getInstance();
 		calendar.setTimeInMillis(millis);
@@ -65,9 +73,10 @@ public class Attempt {
 		return getTimeString(getSuccessTime());
 	}
 	
-	public void endRun(String nRunKiller) {
+	public void endRun(String nRunKiller, String nDeathMessage) {
 		runKiller = nRunKiller;
 		deathTime = System.currentTimeMillis();
+		deathMessage = nDeathMessage;
 	}
 	
 	public void success() {
