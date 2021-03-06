@@ -18,6 +18,7 @@ public class Attempt {
 		startTime = System.currentTimeMillis();
 		deathTime = -1;
 		successTime = -1;
+		deathMessage = "-";
 	}
 	
 	public Attempt(int nAttemptNumber, String nRunKiller, long nStartTime, long nDeathTime, long nSuccessTime, String nDeathMessage) {
