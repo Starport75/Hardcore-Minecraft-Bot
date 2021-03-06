@@ -92,8 +92,9 @@ public class Attempts {
 			long startTime = (long) obj.get("startTime");
 			long deathTime = (long) obj.get("deathTime");
 			long successTime = (long) obj.get("successTime");
+			String deathMessage = (String) obj.get("deathMessage");
 			
-			Attempt attempt = new Attempt((int) attemptNumber, runKiller, startTime, deathTime, successTime);
+			Attempt attempt = new Attempt((int) attemptNumber, runKiller, startTime, deathTime, successTime, deathMessage);
 			addAttempt(attempt, false);
 		}
 		
@@ -115,6 +116,7 @@ public class Attempts {
 			jsonObject.put("startTime", a.getStartTime());
 			jsonObject.put("deathTime", a.getDeathTime());
 			jsonObject.put("successTime", a.getSuccessTime());
+			jsonObject.put("deathMessage", a.getDeathMessage());
 			
 			jsonArray.add(jsonObject);
 		}
