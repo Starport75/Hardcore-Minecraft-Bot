@@ -81,21 +81,22 @@ public class Main {
 				
 				switch (commandName) {
 				case "begin":
-					if (attempts.currentAttemptNumber() == -1) {
+					if (attempts.currentAttemptNumber() == 0) {
 					    String format = "%s!\n\nThe first world has been created! Good luck on your first attempt!";
 					    String announcement = String.format(format, playersRole.getMentionTag());
 					    botAnnouncementChannel.sendMessage(announcement);
 					    attempts.addAttempt(new Attempt(1), true);
 					} else {
-					    channel.sendMessage("You have already began attempts!");
+					    channel.sendMessage("You have already began attempts! " + attempts.currentAttemptNumber());
 					}
+					break;
 				case "death":
 					// Duplicate of the one in the main loop, consider moving to a function
 					try {
 						player = players.findPlayerWD(author.getId());
 						User discordUser = api.getUserById(player.getDiscordID()).get();
 						
-					    String format = "%s!\n\n%s has died! This means that the server will reset, and attempt %d will begin shortly!";
+					    String format = "%s!\n\n%s was wiped from existance by God! This means that the server will reset, and attempt %d will begin shortly!";
 					    String announcement = String.format(format, playersRole.getMentionTag(), discordUser.getMentionTag(), attempts.currentAttemptNumber() + 1);
 					    botAnnouncementChannel.sendMessage(announcement);
 					    server.addRoleToUser(discordUser, runMurdererRole);
@@ -105,7 +106,7 @@ public class Main {
 
 					player.addReset();
 					players.saveToFile();
-					attempts.currentAttempt().endRun(username, "temp death message 2");
+					attempts.currentAttempt().endRun(username, "was wiped from existance by God");
 					attempts.addAttempt(new Attempt(attempts.currentAttemptNumber() + 1), true);
 					break;
 				case "addPlayer":
@@ -137,7 +138,18 @@ public class Main {
 					channel.sendMessage("```" + players.listPlayers() + "```");
 					break;
 				case "listAttempts":
-					channel.sendMessage("```" + attempts.listAttempts() + "```");
+					String output = "";
+					int count = 0;
+					while (count < attempts.listAttempts().size()) {
+						while(count < attempts.listAttempts().size() && output.length() < 1750){
+							output += (attempts.listAttempts().get(count) + "\n");
+							count++;
+							System.out.println("adding string " + count);
+						}
+						System.out.println("size is too big. Moving to new message. Size is " + attempts.listAttempts().size() + "count is");
+						channel.sendMessage("```" + output + "```");
+						output = "";
+					}
 					break;
 				case "listOnline":
 					ArrayList<String> onlinePlayers = ApexHosting.getOnlinePlayers();
@@ -195,7 +207,7 @@ public class Main {
 
 		        player.addReset();
 		        players.saveToFile();
-		        attempts.currentAttempt().endRun(mcUsername, "Temp death message");
+		        attempts.currentAttempt().endRun(mcUsername, reason);
 		        attempts.addAttempt(new Attempt(attempts.currentAttemptNumber() + 1), true);
 		        
 		        ApexHosting.clearConsole();
