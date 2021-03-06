@@ -32,15 +32,16 @@ public class Attempts {
 		saveToFile();
 	}
 	
-	public String listAttempts() {
+	public ArrayList<String> listAttempts() {
 	    ArrayList<String> output = new ArrayList<String>();
-	    String format = "Attempt #%d lasted from %s until %s and was ended by %s. It lasted for %s.";
+	    String format = "Attempt #%d lasted from %s until %s and was ended when %s %s. It lasted for %s.";
 	    for (Attempt a : attempts.subList(0, currentAttemptNumber() - 1)) {
 	        String fString = String.format(format,
 	        							   a.getAttemptNumber(),
 	        							   a.getStartTimeString(),
 	        							   a.getDeathTimeString(),
 	        							   a.getRunKiller(),
+	        							   a.getDeathMessage(),
 	        							   milliToTime(a.getDeathTime() - a.getStartTime())
 	        							   );
 	        output.add(fString);
@@ -51,7 +52,7 @@ public class Attempts {
 	    String fString = String.format(finalFormat, finalAttempt.getAttemptNumber(), finalAttempt.getStartTimeString());
 	    output.add(fString);
 
-	    return String.join("\n", output);
+	    return output;
 	}
 	
 	public int length() {
