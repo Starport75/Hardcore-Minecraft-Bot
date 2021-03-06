@@ -105,7 +105,7 @@ public class Main {
 
 					player.addReset();
 					players.saveToFile();
-					attempts.currentAttempt().endRun(username);
+					attempts.currentAttempt().endRun(username, "temp death message 2");
 					attempts.addAttempt(new Attempt(attempts.currentAttemptNumber() + 1), true);
 					break;
 				case "addPlayer":
@@ -195,7 +195,7 @@ public class Main {
 
 		        player.addReset();
 		        players.saveToFile();
-		        attempts.currentAttempt().endRun(mcUsername);
+		        attempts.currentAttempt().endRun(mcUsername, "Temp death message");
 		        attempts.addAttempt(new Attempt(attempts.currentAttemptNumber() + 1), true);
 		        
 		        ApexHosting.clearConsole();
