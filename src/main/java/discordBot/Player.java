@@ -2,7 +2,6 @@ package discordBot;
 
 import java.util.concurrent.ExecutionException;
 
-import org.javacord.api.DiscordApi;
 import org.javacord.api.entity.user.User;
 
 public class Player {
@@ -44,10 +43,10 @@ public class Player {
 	
 	// instead of passing the freaking api in, make a discordAPI class or something and let functions call that
 	// just like ApexHosting and API.java
-	public String getDiscordName(DiscordApi api) {
+	public String getDiscordName() {
 		try {
-			User discordUser = api.getUserById(discordID).get();
-			return discordUser.getDiscriminatedName();
+			User discordUser = Main.api.getUserById(discordID).get();
+			return discordUser.getDisplayName(Main.server);
 		} catch (InterruptedException | ExecutionException e) {
 			e.printStackTrace();
 		}
