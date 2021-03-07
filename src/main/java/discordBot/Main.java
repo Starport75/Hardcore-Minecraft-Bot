@@ -1,5 +1,7 @@
 package discordBot;
 
+import java.awt.Color;
+
 import java.io.File;
 
 import java.io.FileNotFoundException;
@@ -12,6 +14,7 @@ import org.javacord.api.DiscordApi;
 import org.javacord.api.DiscordApiBuilder;
 import org.javacord.api.entity.channel.TextChannel;
 import org.javacord.api.entity.message.*;
+import org.javacord.api.entity.message.embed.EmbedBuilder;
 import org.javacord.api.entity.permission.Role;
 import org.javacord.api.entity.server.*;
 import org.javacord.api.entity.user.User;
@@ -93,12 +96,18 @@ public class Main {
 				case "death":
 					// Duplicate of the one in the main loop, consider moving to a function
 					try {
-						player = players.findPlayerWD(author.getId());
+						player = players.findPlayerWM(messageContent.substring(7));
 						User discordUser = api.getUserById(player.getDiscordID()).get();
 						
-					    String format = "%s!\n\n%s was wiped from existance by God! This means that the server will reset, and attempt %d will begin shortly!";
+					    String format = "Attention %s!\n>>> %s was wiped from existence by God! This means that the server will reset, and attempt %d will begin shortly!";
 					    String announcement = String.format(format, playersRole.getMentionTag(), discordUser.getMentionTag(), attempts.currentAttemptNumber() + 1);
-					    botAnnouncementChannel.sendMessage(announcement);
+						/*EmbedBuilder announcement = new EmbedBuilder()
+			            		.setTitle("World Announcement")
+			            		.setDescription("Attention " + playersRole.getMentionTag() + "!\n\n" + discordUser.getMentionTag() + " " + "was wiped from existence by God" + "! This means that the server will reset, and attempt " + attempts.currentAttemptNumber() + " will begin shortly!")
+			            		.setColor(Color.RED)
+			            		.setThumbnail(discordUser.getAvatar())
+			            ;*/
+						botAnnouncementChannel.sendMessage(announcement);
 					    server.addRoleToUser(discordUser, runMurdererRole);
 					} catch (InterruptedException | ExecutionException e) {
 					    e.printStackTrace();
@@ -197,8 +206,14 @@ public class Main {
 		        Player player = players.findPlayerWM(mcUsername);
 		        try {
 		            User discordUser = api.getUserById(player.getDiscordID()).get();
-		            String format = "%s!\n\n%s %s! This means that the server will reset, and attempt %d will begin shortly!";
+		            String format = "Attention %s!\n>>> %s %s! This means that the server will reset, and attempt %d will begin shortly!";
 		            String announcement = String.format(format, playersRole.getMentionTag(), discordUser.getMentionTag(), reason, attempts.currentAttemptNumber());
+		            /*EmbedBuilder announcement = new EmbedBuilder()
+		            		.setTitle("World Announcement")
+		            		.setDescription("Attention " + playersRole.getMentionTag() + "!\n\n" + discordUser.getMentionTag() + " " + reason + "! This means that the server will reset, and attempt " + attempts.currentAttemptNumber() + " will begin shortly!")
+		            		.setColor(Color.RED)
+		            		.setThumbnail(discordUser.getAvatar())
+		            ;*/
 		            botAnnouncementChannel.sendMessage(announcement);
 		            server.addRoleToUser(discordUser, runMurdererRole);
 		        } catch (InterruptedException | ExecutionException e) {
