@@ -114,8 +114,14 @@ public class ApexHosting {
 			if (matcher.find()) {
 				String name = matcher.group(1);
 				String reason = matcher.group(2);
+				System.out.println("1 - Name: " + name + " Reason: " + reason);
 				for (String deathMessage : deathMessages) {
+<<<<<<< Updated upstream
 					if (reason.contains(deathMessage) && !line.contains("Villager")) {
+=======
+					if (reason.contains(deathMessage)) {
+						System.out.println("2 - Name: " + name + " Reason: " + reason + " Message: " + deathMessages);
+>>>>>>> Stashed changes
 						return new String[] {name, reason};
 					}
 				}
