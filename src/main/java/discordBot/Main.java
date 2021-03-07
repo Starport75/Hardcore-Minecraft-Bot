@@ -204,6 +204,7 @@ public class Main {
 		        String reason = possibleDeath[1];
 		        Player player = players.findPlayerWM(mcUsername);
 		        try {
+		        	System.out.println(player.getDiscordName() + " " + player.getMinecraftUsername() + " " + player.getDiscordID());
 		            User discordUser = api.getUserById(player.getDiscordID()).get();
 		            String format = "Attention %s!\n>>> %s %s! This means that the server will reset, and attempt %d will begin shortly!";
 		            String announcement = String.format(format, playersRole.getMentionTag(), discordUser.getMentionTag(), reason, attempts.currentAttemptNumber());
