@@ -115,7 +115,7 @@ public class ApexHosting {
 				String name = matcher.group(1);
 				String reason = matcher.group(2);
 				for (String deathMessage : deathMessages) {
-					if (reason.contains(deathMessage)) {
+					if (reason.contains(deathMessage) && !line.contains("Villager")) {
 						return new String[] {name, reason};
 					}
 				}
