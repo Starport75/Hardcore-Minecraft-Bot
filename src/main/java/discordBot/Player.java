@@ -4,7 +4,7 @@ import java.util.concurrent.ExecutionException;
 
 import org.javacord.api.entity.user.User;
 
-public class Player {
+public class Player implements Comparable<Player> {
 	private String minecraftUsername;
 	private long discordID;
 	private long resetCount;
@@ -19,6 +19,11 @@ public class Player {
 		minecraftUsername = nMinecraftUsername;
 		discordID = nDiscordID;
 		resetCount = resets;
+	}
+	
+	@Override
+	public int compareTo(Player other) {
+		return minecraftUsername.compareTo(other.getMinecraftUsername());
 	}
 	
 	public void changeMinecraftUsername(String newUsername) {

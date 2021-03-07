@@ -1,12 +1,11 @@
 package discordBot;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
-
+import java.util.Collections;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -26,14 +25,19 @@ public class Players {
 	
 	public void addPlayer(Player player) {
 		players.add(player);
+		Collections.sort(players);
 		saveToFile();
 	}
 	
 	public String listPlayers() {
+		@SuppressWarnings("unchecked")
+		ArrayList<Player> sortedPlayers = (ArrayList<Player>) players.clone();
+		Collections.sort(sortedPlayers);
+		
 		ArrayList<String> playerInfo = new ArrayList<String>();
 		String format = "%s (aka %s) has caused %d server reset";
 		
-		for (Player p : players) {
+		for (Player p : sortedPlayers) {
 			long resets = p.getResetCount();
 			
 			// TODO: Make a static "DiscordAPI" class (or just static Main variable) for Player to reference and use to generate Discord Usernames.   
@@ -90,25 +94,17 @@ public class Players {
 	
 	public void readFromFile() {
 		File file = new File(fileName);
-		FileReader reader = null;
-		try {
-			reader = new FileReader(file);
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		}
-		JSONParser parser = new JSONParser();
-		
 		Object json = null;
 		try {
+			FileReader reader = new FileReader(file);
+			JSONParser parser = new JSONParser();
 			json = parser.parse(reader);
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (ParseException e) {
+			reader.close();
+		} catch (IOException | ParseException e) {
 			e.printStackTrace();
 		}
 		
 		JSONArray jsonArray = (JSONArray) json;
-		
 		for (Object item : jsonArray) {
 			JSONObject obj = (JSONObject) item;
 			
@@ -119,12 +115,7 @@ public class Players {
 			Player player = new Player(minecraftUsername, discordID, resetCount);
 			players.add(player);
 		}
-		
-		try {
-			reader.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		Collections.sort(players);
 	}
 	
 	@SuppressWarnings("unchecked")
