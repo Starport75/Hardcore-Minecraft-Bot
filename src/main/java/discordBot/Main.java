@@ -3,7 +3,6 @@ package discordBot;
 import java.awt.Color;
 
 import java.io.File;
-
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -13,10 +12,10 @@ import java.util.concurrent.ExecutionException;
 import org.javacord.api.DiscordApi;
 import org.javacord.api.DiscordApiBuilder;
 import org.javacord.api.entity.channel.TextChannel;
-import org.javacord.api.entity.message.*;
-import org.javacord.api.entity.message.embed.EmbedBuilder;
+import org.javacord.api.entity.message.Message;
+import org.javacord.api.entity.message.MessageAuthor;
 import org.javacord.api.entity.permission.Role;
-import org.javacord.api.entity.server.*;
+import org.javacord.api.entity.server.Server;
 import org.javacord.api.entity.user.User;
 
 import apexHostingAPI.ApexHosting;
@@ -48,7 +47,7 @@ public class Main {
 		token = loadToken();
 		api = new DiscordApiBuilder().setToken(token).login().join();
 		System.out.println(token);
-
+		
 		ApexHosting.main();
 		
 		// Print the invite url of your bot
@@ -232,6 +231,7 @@ public class Main {
 		    System.out.println("Getting chat messages.");
 		    ArrayList<String[]> chatMessages = ApexHosting.getChatMessages();
 		    if (chatMessages != null) {
+		    	String discordMessage = "";
 		        for (String[] message : chatMessages) {
 		            String username = message[0];
 		            String output = message[1];
@@ -248,8 +248,9 @@ public class Main {
 		                    e.printStackTrace();
 		                }
 		            }
-		            minecraftChatChannel.sendMessage("**<" + username + ">** " + output);
+		            discordMessage += "**<" + username + ">** " + output + '\n';
 		        }
+		        minecraftChatChannel.sendMessage(discordMessage);
 		    }
 		    
 			System.out.println("[LOOP]");
