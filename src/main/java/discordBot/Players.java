@@ -38,7 +38,7 @@ public class Players {
 			
 			// TODO: Make a static "DiscordAPI" class (or just static Main variable) for Player to reference and use to generate Discord Usernames.   
 			// Passing in Main.api and it being a public static variable is probably bad practice in general.
-			String info = String.format(format, p.getMinecraftUsername(), p.getDiscordName(Main.api), resets);
+			String info = String.format(format, p.getMinecraftUsername(), p.getDiscordName(), resets);
 			if (resets != 1) {
 				info += "s";
 			}

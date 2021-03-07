@@ -27,7 +27,7 @@ public class Main {
 	private static String commandPrefix = "!";
 	
 	private static String serverID = "814169786232995850";
-	private static Server server;
+	public static Server server;
 	
 	private static String botAnnouncementChannelID = "815713609510027265";
 	private static TextChannel botAnnouncementChannel;
