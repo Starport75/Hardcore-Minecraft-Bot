@@ -39,6 +39,8 @@ public class Main {
 	private static Role playersRole;
 	private static String runMurdererRoleID = "815406531155722250";
 	private static Role runMurdererRole;
+	private static String runAngelRoleID = "818235018799087676";
+	private static Role runAngelRole;
 	
 	private static Players players = new Players();
 	private static Attempts attempts = new Attempts();
@@ -107,6 +109,7 @@ public class Main {
 			            		.setThumbnail(discordUser.getAvatar())
 			            ;*/
 						botAnnouncementChannel.sendMessage(announcement);
+						server.removeRoleFromUser(discordUser, runAngelRole);
 					    server.addRoleToUser(discordUser, runMurdererRole);
 					} catch (InterruptedException | ExecutionException e) {
 					    e.printStackTrace();
@@ -126,6 +129,7 @@ public class Main {
 					            try {
 						            User discordUser = api.getUserById(newPlayer.getDiscordID()).get();
 					                server.addRoleToUser(discordUser, playersRole);
+					                server.addRoleToUser(discordUser, runAngelRole);
 					                String format = "Thank you %s! You have been linked with the Minecraft username `%s`!";
 					                String response = String.format(format, discordUser.getMentionTag(), newPlayer.getMinecraftUsername());
 					                channel.sendMessage(response);
@@ -215,6 +219,7 @@ public class Main {
 		            		.setThumbnail(discordUser.getAvatar())
 		            ;*/
 		            botAnnouncementChannel.sendMessage(announcement);
+					server.removeRoleFromUser(discordUser, runAngelRole);
 		            server.addRoleToUser(discordUser, runMurdererRole);
 		        } catch (InterruptedException | ExecutionException e) {
 		            e.printStackTrace();
