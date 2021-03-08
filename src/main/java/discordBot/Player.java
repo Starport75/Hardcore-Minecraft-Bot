@@ -23,7 +23,8 @@ public class Player implements Comparable<Player> {
 	
 	@Override
 	public int compareTo(Player other) {
-		return minecraftUsername.compareTo(other.getMinecraftUsername());
+		Long l = resetCount - other.resetCount;
+		return l.intValue();
 	}
 	
 	public void changeMinecraftUsername(String newUsername) {
