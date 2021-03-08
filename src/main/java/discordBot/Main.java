@@ -6,6 +6,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Scanner;
 import java.util.concurrent.ExecutionException;
 
@@ -150,6 +151,25 @@ public class Main {
 					    channel.sendMessage("Please type the command as: `!addPlayer <Minecraft Username>`.");
 					}
 					break;
+				case "changePlayer":
+					User user = author.asUser().get();
+					List<Role> roles = user.getRoles(server);
+					
+					if (roles.contains(adminRole)) {
+						String targetUserMention = arguments[0];
+						String targetUserId = targetUserMention.substring(3, targetUserMention.length() - 1);
+						String newName = arguments[1];
+						
+						Player targetPlayer = players.findPlayerWD(Long.parseLong(targetUserId));
+						targetPlayer.changeMinecraftUsername(newName);
+						String discordMessage = "Changed username of " + targetPlayer.getDiscordName() + " to \"" + targetPlayer.getMinecraftUsername() + "\"."; 
+						channel.sendMessage(discordMessage);
+						break;
+					} else {
+						channel.sendMessage("You are not an admin, thus you do not have access to this command.");
+					}
+					
+					break;
 				case "listPlayers":
 					channel.sendMessage("```" + players.listPlayers() + "```");
 					break;
@@ -190,7 +210,7 @@ public class Main {
 					}
 					break;
 				default:
-					channel.sendMessage("This command does not exist.");
+					//channel.sendMessage("This command does not exist.");
 				}
 			}
 			
