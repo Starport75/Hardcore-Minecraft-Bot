@@ -23,7 +23,7 @@ public class Player implements Comparable<Player> {
 	
 	@Override
 	public int compareTo(Player other) {
-		Long l = resetCount - other.resetCount;
+		Long l = other.resetCount - resetCount;
 		return l.intValue();
 	}
 	
