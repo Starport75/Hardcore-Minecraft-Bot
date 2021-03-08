@@ -1,5 +1,5 @@
 package discordBot;
-//testing
+
 import java.awt.Color;
 
 import java.io.File;
@@ -39,6 +39,8 @@ public class Main {
 	private static Role playersRole;
 	private static String runMurdererRoleID = "815406531155722250";
 	private static Role runMurdererRole;
+	private static String runSerialKillerRoleID = "815406531155722250";
+	private static Role runSerialKillerRole;
 	private static String runAngelRoleID = "818235018799087676";
 	private static Role runAngelRole;
 	
@@ -63,6 +65,7 @@ public class Main {
 		adminRole = api.getRoleById(adminRoleID).get();
 		playersRole = api.getRoleById(playersRoleID).get();
 		runMurdererRole = api.getRoleById(runMurdererRoleID).get();
+		runSerialKillerRole = api.getRoleById(runSerialKillerRoleID).get();
 		runAngelRole = api.getRoleById(runAngelRoleID).get();
 		
 		api.addMessageCreateListener(event -> {
