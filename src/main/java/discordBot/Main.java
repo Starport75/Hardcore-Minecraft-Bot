@@ -283,23 +283,25 @@ public class Main {
 
 		    System.out.println("Getting chat messages.");
 		    ArrayList<String[]> chatMessages = ApexHosting.getChatMessages();
-		    if (chatMessages != null) {
+		    if (chatMessages.size() > 0) {
 		    	String discordMessage = "";
 		        for (String[] message : chatMessages) {
 		            String username = message[0];
 		            String output = message[1];
-		            output = output.replaceAll("@everyone", "@ everyone")
-		                           .replaceAll("@Run Murderer", runMurdererRole.getMentionTag())
-		                           .replaceAll("@Admin", adminRole.getMentionTag())
-		                           .replaceAll("@Players", playersRole.getMentionTag());
-		            for (int i = 0; i < players.length(); i++) {
-		            	Player player = players.getPlayer(i);
-		                try {
-		                	User user = api.getUserById(player.getDiscordID()).get();
-		                    output = output.replaceAll("@" + user.getDisplayName(server), user.getMentionTag());
-		                } catch (InterruptedException | ExecutionException e) {
-		                    e.printStackTrace();
-		                }
+		            if (output.contains("@")) {
+			            output = output.replaceAll("@everyone", "@ everyone")
+			                           .replaceAll("@Run Murderer", runMurdererRole.getMentionTag())
+			                           .replaceAll("@Admin", adminRole.getMentionTag())
+			                           .replaceAll("@Players", playersRole.getMentionTag());
+			            for (int i = 0; i < players.length(); i++) {
+			            	Player player = players.getPlayer(i);
+			                try {
+			                	User user = api.getUserById(player.getDiscordID()).get();
+			                    output = output.replaceAll("@" + user.getDisplayName(server), user.getMentionTag());
+			                } catch (InterruptedException | ExecutionException e) {
+			                    e.printStackTrace();
+			                }
+			            }
 		            }
 		            discordMessage += "**<" + username + ">** " + output + '\n';
 		        }
