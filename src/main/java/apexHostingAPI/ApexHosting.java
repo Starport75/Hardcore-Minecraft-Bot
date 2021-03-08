@@ -64,9 +64,13 @@ public class ApexHosting {
 			}
 		}
 		
-		List<String[]> subList = retrievedChatMessages.subList(chatIndex, retrievedChatMessages.size());
-		chatMessages = new ArrayList<String[]>(subList);
-		chatIndex = retrievedChatMessages.size();
+		if (chatIndex <= retrievedChatMessages.size()) {
+			List<String[]> subList = retrievedChatMessages.subList(chatIndex, retrievedChatMessages.size());
+			chatMessages = new ArrayList<String[]>(subList);
+			chatIndex = retrievedChatMessages.size();			
+		} else {
+			chatMessages = new ArrayList<String[]>();
+		}
 	}
 	
 	public static String[] getConsoleLog() {
