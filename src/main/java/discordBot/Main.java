@@ -63,6 +63,7 @@ public class Main {
 		adminRole = api.getRoleById(adminRoleID).get();
 		playersRole = api.getRoleById(playersRoleID).get();
 		runMurdererRole = api.getRoleById(runMurdererRoleID).get();
+		runAngelRole = api.getRoleById(runAngelRoleID).get();
 		
 		api.addMessageCreateListener(event -> {
 			Message message = event.getMessage();
