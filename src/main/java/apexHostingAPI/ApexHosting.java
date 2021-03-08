@@ -11,7 +11,7 @@ import org.json.simple.JSONObject;
 
 public class ApexHosting {
 	private static JSONObject console;
-	private static Integer consoleIndex = 0;
+	private static Integer consoleIndex;
 	private static String[] consoleLog;
 	
 	private static JSONObject chat;
@@ -20,6 +20,8 @@ public class ApexHosting {
 	
 	public static void main() {
 		API.initialize();
+		clearConsole();
+		clearChat();
 	}
 	
 	public static void updateConsole() {
@@ -34,6 +36,8 @@ public class ApexHosting {
 		consoleLog = ((String) console.get("log")).split("\n");
 		consoleLog = Arrays.copyOfRange(consoleLog, 0, consoleLog.length - logOffset);
 		Collections.reverse(Arrays.asList(consoleLog));
+		
+		clearConsole();
 	}
 	
 	public static void updateChat() {
@@ -74,6 +78,8 @@ public class ApexHosting {
 		if (chatMessages.size() > 0) {
 			lastChatMessage = chatMessages.get(chatMessages.size() - 1);
 		}
+		
+		clearChat();
 	}
 	
 	public static String[] getConsoleLog() {
