@@ -39,10 +39,8 @@ public class ApexHosting {
 		}
 		
 		consoleLog = ((String) console.get("log")).split("\n");
-		consoleLog = Arrays.copyOfRange(consoleLog, 1, consoleLog.length - logOffset);
+		consoleLog = Arrays.copyOfRange(consoleLog, 0, consoleLog.length - logOffset);
 		Collections.reverse(Arrays.asList(consoleLog));
-		
-		clearConsole();
 	}
 	
 	public static void updateChat() {
