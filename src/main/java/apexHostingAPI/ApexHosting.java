@@ -15,8 +15,8 @@ public class ApexHosting {
 	private static String[] consoleLog;
 	
 	private static JSONObject chat;
+	private static int chatIndex = 0;
 	private static ArrayList<String[]> chatMessages;
-	private static String[] lastChatMessage;
 	
 	public static void main() {
 		API.initialize();
@@ -51,6 +51,9 @@ public class ApexHosting {
 		Pattern pattern = Pattern.compile("<([A-Za-z0-9_]{3,16})>\\s+(.+)");
 		String[] rawMessages = chat.get("chat").toString().split("\n");
 		
+		// might be unnessessary due to `rawMessages` containing a (pretty) clean list of messages?
+		// could trim that down using the sublist crap to reduce the for loop crud
+		// clearing every hour or whatever should be okay too though i think
 		ArrayList<String[]> retrievedChatMessages = new ArrayList<String[]>();
 		for (String rawMessage : rawMessages) {
 			Matcher matcher = pattern.matcher(rawMessage);
@@ -61,30 +64,9 @@ public class ApexHosting {
 			}
 		}
 		
-		if (retrievedChatMessages.size() == 0) {
-			return;
-		}
-		
-		if (lastChatMessage == null) {
-			lastChatMessage = retrievedChatMessages.get(retrievedChatMessages.size() - 1);
-		}
-		
-		int i;
-		for (i = retrievedChatMessages.size() - 1; i >= 0; i--) {
-			String[] message = retrievedChatMessages.get(i);
-			if (message[0].equals(lastChatMessage[0]) && message[1].equals(lastChatMessage[1])) {
-				break;
-			}
-		}
-		
-		List<String[]> subList = retrievedChatMessages.subList(i + 1, retrievedChatMessages.size());
+		List<String[]> subList = retrievedChatMessages.subList(chatIndex, retrievedChatMessages.size());
 		chatMessages = new ArrayList<String[]>(subList);
-		
-		if (chatMessages.size() > 0) {
-			lastChatMessage = chatMessages.get(chatMessages.size() - 1);
-		}
-		
-		clearChat();
+		chatIndex = retrievedChatMessages.size();
 	}
 	
 	public static String[] getConsoleLog() {
@@ -102,7 +84,7 @@ public class ApexHosting {
 	
 	public static void clearChat() {
 		API.clearChat();
-		lastChatMessage = new String[2];
+		chatIndex = 0;
 	}
 	
 	public static void changeWorld(String worldName) {
