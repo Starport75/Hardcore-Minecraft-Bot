@@ -31,10 +31,15 @@ public class ApexHosting {
 		}
 		
 		console = API.getConsole(consoleIndex);
-		consoleIndex = Integer.parseInt(console.get("log_seq").toString());
+		Object logIndex = console.get("log_seq");
+		if (logIndex != null) {
+			consoleIndex = Integer.parseInt(logIndex.toString());
+		} else {
+			consoleIndex = 0;
+		}
 		
 		consoleLog = ((String) console.get("log")).split("\n");
-		consoleLog = Arrays.copyOfRange(consoleLog, 0, consoleLog.length - logOffset);
+		consoleLog = Arrays.copyOfRange(consoleLog, 1, consoleLog.length - logOffset);
 		Collections.reverse(Arrays.asList(consoleLog));
 		
 		clearConsole();
