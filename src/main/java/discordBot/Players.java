@@ -92,6 +92,17 @@ public class Players {
 		return new Player("Unknown Player", -1);
 	}
 	
+	
+	public Player getHighestMurderer() {
+		Player currHighest = new Player("Temp", -1);
+		for (Player p : players) {
+			if (currHighest.getResetCount() <= p.getResetCount()) {
+				currHighest = p;
+			}
+		}
+		return currHighest;
+	}
+	
 	public void readFromFile() {
 		File file = new File(fileName);
 		Object json = null;

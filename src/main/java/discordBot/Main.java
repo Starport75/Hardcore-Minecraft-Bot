@@ -120,10 +120,22 @@ public class Main {
 					    e.printStackTrace();
 					}
 
+					Player oldHolder = players.getHighestMurderer();
 					player.addReset();
 					players.saveToFile();
 					attempts.currentAttempt().endRun(username, "was wiped from existance by God");
 					attempts.addAttempt(new Attempt(attempts.currentAttemptNumber() + 1), true);
+					if (oldHolder != players.getHighestMurderer()) {
+						User discordUser;
+						try {
+							discordUser = api.getUserById(oldHolder.getDiscordID()).get();
+							server.removeRoleFromUser(discordUser, runSerialKillerRole);
+							discordUser = api.getUserById(players.getHighestMurderer().getDiscordID()).get();
+							server.addRoleToUser(discordUser, runSerialKillerRole);
+						} catch (InterruptedException | ExecutionException e) {
+							e.printStackTrace();
+						}
+					}
 					break;
 				case "addPlayer":
 					if (username != null) {
@@ -248,11 +260,22 @@ public class Main {
 		        } catch (InterruptedException | ExecutionException e) {
 		            e.printStackTrace();
 		        }
-
+				Player oldHolder = players.getHighestMurderer();
 		        player.addReset();
 		        players.saveToFile();
 		        attempts.currentAttempt().endRun(mcUsername, reason);
 		        attempts.addAttempt(new Attempt(attempts.currentAttemptNumber() + 1), true);
+		        if (oldHolder != players.getHighestMurderer()) {
+					User discordUser;
+					try {
+						discordUser = api.getUserById(oldHolder.getDiscordID()).get();
+						server.removeRoleFromUser(discordUser, runSerialKillerRole);
+						discordUser = api.getUserById(players.getHighestMurderer().getDiscordID()).get();
+						server.addRoleToUser(discordUser, runSerialKillerRole);
+					} catch (InterruptedException | ExecutionException e) {
+						e.printStackTrace();
+					}
+		        }
 		        
 		        ApexHosting.clearConsole();
 		        ApexHosting.clearChat();
