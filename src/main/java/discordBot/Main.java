@@ -266,12 +266,14 @@ public class Main {
 		        attempts.currentAttempt().endRun(mcUsername, reason);
 		        attempts.addAttempt(new Attempt(attempts.currentAttemptNumber() + 1), true);
 		        if (oldHolder != players.getHighestMurderer()) {
-					User discordUser;
+					User discordKillerOld;
+					User discordKillerNew;
 					try {
-						discordUser = api.getUserById(oldHolder.getDiscordID()).get();
-						server.removeRoleFromUser(discordUser, runSerialKillerRole);
-						discordUser = api.getUserById(players.getHighestMurderer().getDiscordID()).get();
-						server.addRoleToUser(discordUser, runSerialKillerRole);
+						discordKillerOld = api.getUserById(oldHolder.getDiscordID()).get();
+						server.removeRoleFromUser(discordKillerOld, runSerialKillerRole);
+						discordKillerNew = api.getUserById(players.getHighestMurderer().getDiscordID()).get();
+						server.addRoleToUser(discordKillerNew, runSerialKillerRole);
+						botAnnouncementChannel.sendMessage("... and with that " + discordKillerNew.getMentionTag() + " has overtaken " + discordKillerOld.getMentionTag() + " as " + runSerialKillerRole.getMentionTag() + "!");
 					} catch (InterruptedException | ExecutionException e) {
 						e.printStackTrace();
 					}
