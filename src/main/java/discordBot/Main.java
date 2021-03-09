@@ -40,7 +40,7 @@ public class Main {
 	private static Role playersRole;
 	private static String runMurdererRoleID = "815406531155722250";
 	private static Role runMurdererRole;
-	private static String runSerialKillerRoleID = "815406531155722250";
+	private static String runSerialKillerRoleID = "818304226165653504";
 	private static Role runSerialKillerRole;
 	private static String runAngelRoleID = "818235018799087676";
 	private static Role runAngelRole;
@@ -215,7 +215,7 @@ public class Main {
 		        for (String[] message : chatMessages) {
 		            String username = message[0];
 		            String output = message[1];
-		            if (output.contains("@")) {
+		           /* if (output.contains("@")) {
 			            output = output.replaceAll("@everyone", "@ everyone")
 			                           .replaceAll("@Run Murderer", runMurdererRole.getMentionTag())
 			                           .replaceAll("@Admin", adminRole.getMentionTag())
@@ -229,7 +229,7 @@ public class Main {
 			                    e.printStackTrace();
 			                }
 			            }
-		            }
+		            }*/
 		            discordMessage += "**<" + username + ">** " + output + '\n';
 		        }
 		        minecraftChatChannel.sendMessage(discordMessage);
