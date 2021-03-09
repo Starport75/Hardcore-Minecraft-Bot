@@ -100,42 +100,7 @@ public class Main {
 					}
 					break;
 				case "death":
-					// Duplicate of the one in the main loop, consider moving to a function
-					try {
-						player = players.findPlayerWM(messageContent.substring(7));
-						User discordUser = api.getUserById(player.getDiscordID()).get();
-						
-					    String format = "Attention %s!\n>>> %s was wiped from existence by God! This means that the server will reset, and attempt %d will begin shortly!";
-					    String announcement = String.format(format, playersRole.getMentionTag(), discordUser.getMentionTag(), attempts.currentAttemptNumber() + 1);
-						/*EmbedBuilder announcement = new EmbedBuilder()
-			            		.setTitle("World Announcement")
-			            		.setDescription("Attention " + playersRole.getMentionTag() + "!\n\n" + discordUser.getMentionTag() + " " + "was wiped from existence by God" + "! This means that the server will reset, and attempt " + attempts.currentAttemptNumber() + " will begin shortly!")
-			            		.setColor(Color.RED)
-			            		.setThumbnail(discordUser.getAvatar())
-			            ;*/
-						botAnnouncementChannel.sendMessage(announcement);
-						server.removeRoleFromUser(discordUser, runAngelRole);
-					    server.addRoleToUser(discordUser, runMurdererRole);
-					} catch (InterruptedException | ExecutionException e) {
-					    e.printStackTrace();
-					}
-
-					Player oldHolder = players.getHighestMurderer();
-					player.addReset();
-					players.saveToFile();
-					attempts.currentAttempt().endRun(username, "was wiped from existance by God");
-					attempts.addAttempt(new Attempt(attempts.currentAttemptNumber() + 1), true);
-					if (oldHolder != players.getHighestMurderer()) {
-						User discordUser;
-						try {
-							discordUser = api.getUserById(oldHolder.getDiscordID()).get();
-							server.removeRoleFromUser(discordUser, runSerialKillerRole);
-							discordUser = api.getUserById(players.getHighestMurderer().getDiscordID()).get();
-							server.addRoleToUser(discordUser, runSerialKillerRole);
-						} catch (InterruptedException | ExecutionException e) {
-							e.printStackTrace();
-						}
-					}
+					runDeath(messageContent.substring(7), "was wiped from existence by God!");
 					break;
 				case "addPlayer":
 					if (username != null) {
@@ -240,47 +205,7 @@ public class Main {
 			System.out.println("Getting possible deaths.");
 			String[] possibleDeath = ApexHosting.getPossibleDeath();
 		    if (possibleDeath != null) {
-		        String mcUsername = possibleDeath[0];
-		        String reason = possibleDeath[1];
-		        Player player = players.findPlayerWM(mcUsername);
-		        try {
-		        	System.out.println(player.getDiscordName() + " " + player.getMinecraftUsername() + " " + player.getDiscordID());
-		            User discordUser = api.getUserById(player.getDiscordID()).get();
-		            String format = "Attention %s!\n>>> %s %s! This means that the server will reset, and attempt %d will begin shortly!";
-		            String announcement = String.format(format, playersRole.getMentionTag(), discordUser.getMentionTag(), reason, attempts.currentAttemptNumber());
-		            /*EmbedBuilder announcement = new EmbedBuilder()
-		            		.setTitle("World Announcement")
-		            		.setDescription("Attention " + playersRole.getMentionTag() + "!\n\n" + discordUser.getMentionTag() + " " + reason + "! This means that the server will reset, and attempt " + attempts.currentAttemptNumber() + " will begin shortly!")
-		            		.setColor(Color.RED)
-		            		.setThumbnail(discordUser.getAvatar())
-		            ;*/
-		            botAnnouncementChannel.sendMessage(announcement);
-					server.removeRoleFromUser(discordUser, runAngelRole);
-		            server.addRoleToUser(discordUser, runMurdererRole);
-		        } catch (InterruptedException | ExecutionException e) {
-		            e.printStackTrace();
-		        }
-				Player oldHolder = players.getHighestMurderer();
-		        player.addReset();
-		        players.saveToFile();
-		        attempts.currentAttempt().endRun(mcUsername, reason);
-		        attempts.addAttempt(new Attempt(attempts.currentAttemptNumber() + 1), true);
-		        if (oldHolder != players.getHighestMurderer()) {
-					User discordKillerOld;
-					User discordKillerNew;
-					try {
-						discordKillerOld = api.getUserById(oldHolder.getDiscordID()).get();
-						server.removeRoleFromUser(discordKillerOld, runSerialKillerRole);
-						discordKillerNew = api.getUserById(players.getHighestMurderer().getDiscordID()).get();
-						server.addRoleToUser(discordKillerNew, runSerialKillerRole);
-						botAnnouncementChannel.sendMessage("... and with that " + discordKillerNew.getMentionTag() + " has overtaken " + discordKillerOld.getMentionTag() + " as " + runSerialKillerRole.getMentionTag() + "!");
-					} catch (InterruptedException | ExecutionException e) {
-						e.printStackTrace();
-					}
-		        }
-		        
-		        ApexHosting.clearConsole();
-		        ApexHosting.clearChat();
+		        runDeath(possibleDeath[0], possibleDeath[1]);
 		    }
 
 		    System.out.println("Getting chat messages.");
@@ -327,5 +252,49 @@ public class Main {
 			e.printStackTrace();
 		}
 		return token;
+	}
+	
+	private static void runDeath(String runMurderer, String cause) {
+		String mcUsername = runMurderer;
+        String reason = cause;
+        Player player = players.findPlayerWM(mcUsername);
+        try {
+        	System.out.println(player.getDiscordName() + " " + player.getMinecraftUsername() + " " + player.getDiscordID());
+            User discordUser = api.getUserById(player.getDiscordID()).get();
+            String format = "Attention %s!\n>>> %s %s! This means that the server will reset, and attempt %d will begin shortly!";
+            String announcement = String.format(format, playersRole.getMentionTag(), discordUser.getMentionTag(), reason, attempts.currentAttemptNumber());
+            /*EmbedBuilder announcement = new EmbedBuilder()
+            		.setTitle("World Announcement")
+            		.setDescription("Attention " + playersRole.getMentionTag() + "!\n\n" + discordUser.getMentionTag() + " " + reason + "! This means that the server will reset, and attempt " + attempts.currentAttemptNumber() + " will begin shortly!")
+            		.setColor(Color.RED)
+            		.setThumbnail(discordUser.getAvatar())
+            ;*/
+            botAnnouncementChannel.sendMessage(announcement);
+			server.removeRoleFromUser(discordUser, runAngelRole);
+            server.addRoleToUser(discordUser, runMurdererRole);
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+        }
+		Player oldHolder = players.getHighestMurderer();
+        player.addReset();
+        players.saveToFile();
+        attempts.currentAttempt().endRun(mcUsername, reason);
+        attempts.addAttempt(new Attempt(attempts.currentAttemptNumber() + 1), true);
+        if (oldHolder != players.getHighestMurderer()) {
+			User discordKillerOld;
+			User discordKillerNew;
+			try {
+				discordKillerOld = api.getUserById(oldHolder.getDiscordID()).get();
+				server.removeRoleFromUser(discordKillerOld, runSerialKillerRole);
+				discordKillerNew = api.getUserById(players.getHighestMurderer().getDiscordID()).get();
+				server.addRoleToUser(discordKillerNew, runSerialKillerRole);
+				botAnnouncementChannel.sendMessage("... and with that " + discordKillerNew.getMentionTag() + " has overtaken " + discordKillerOld.getMentionTag() + " as " + runSerialKillerRole.getMentionTag() + "!");
+			} catch (InterruptedException | ExecutionException e) {
+				e.printStackTrace();
+			}
+        }
+        
+        ApexHosting.clearConsole();
+        ApexHosting.clearChat();
 	}
 }
