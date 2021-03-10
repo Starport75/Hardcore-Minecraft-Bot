@@ -34,12 +34,11 @@ public class Attempts {
 	
 	public ArrayList<String> listAttempts() {
 	    ArrayList<String> output = new ArrayList<String>();
-	    String format = "Attempt #%d lasted from %s until %s and was ended when %s %s. It lasted for %s.";
+	    String format = "Attempt #%d began on %s and was ended when %s %s. It lasted for %s.";
 	    for (Attempt a : attempts.subList(0, currentAttemptNumber() - 1)) {
 	        String fString = String.format(format,
 	        							   a.getAttemptNumber(),
 	        							   a.getStartTimeString(),
-	        							   a.getDeathTimeString(),
 	        							   a.getRunKiller(),
 	        							   a.getDeathMessage(),
 	        							   milliToTime(a.getDeathTime() - a.getStartTime())
