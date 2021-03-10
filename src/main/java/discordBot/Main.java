@@ -195,7 +195,7 @@ public class Main {
 			}
 			
 			if (channel == minecraftChatChannel && !author.isYourself()) {
-		        ApexHosting.sendChatMessage("@" + author.getDisplayName(), messageContent);
+		        ApexHosting.sendChatMessage("@" + author.getDisplayName(), messageContent.replace("\n", " "));
 		    }
 		});
 
