@@ -52,6 +52,36 @@ public class Players {
 		return String.join("\n", playerInfo);
 	}
 	
+	public String listRatios() {
+		@SuppressWarnings("unchecked")
+		ArrayList<Player> sortedPlayers = (ArrayList<Player>) players.clone();
+		Collections.sort(sortedPlayers);
+		
+		ArrayList<String> playerInfo = new ArrayList<String>();
+		String format = "%s (aka %s)'s reset to world ratio is %d:%d, or %d%%.";
+		
+		for (Player p : sortedPlayers) {
+			long resets = p.getResetCount();
+			long worlds = p.getWorldCount();
+			int percent = p.getRatioPercent();
+			
+			// TODO: Make a static "DiscordAPI" class (or just static Main variable) for Player to reference and use to generate Discord Usernames.   
+			// Passing in Main.api and it being a public static variable is probably bad practice in general.
+			if(percent != -1) {
+				String info = String.format(format, p.getMinecraftUsername(), p.getDiscordName(), resets, worlds, percent);
+				//if (resets != 1) {
+				//	info += "s";
+				//}
+				//info += ".";
+				playerInfo.add(info);
+			} else {
+				String info = (p.getMinecraftUsername() + " has not participated in a world yet.");
+				playerInfo.add(info);
+			}
+		}
+		return String.join("\n", playerInfo);
+	}
+	
 	public int length() {
 		return players.size();
 	}
@@ -122,8 +152,10 @@ public class Players {
 			String minecraftUsername = (String) obj.get("minecraftUsername");
 			long discordID = (long) obj.get("discordID");
 			long resetCount = (long) obj.get("resetCount");
+			long worldCount = (long) obj.get("worldCount");
+			long lastWorld = (long) obj.get("lastWorldJoined");
 			
-			Player player = new Player(minecraftUsername, discordID, resetCount);
+			Player player = new Player(minecraftUsername, discordID, resetCount, worldCount, lastWorld);
 			players.add(player);
 		}
 		Collections.sort(players);
@@ -138,6 +170,8 @@ public class Players {
 			jsonObject.put("minecraftUsername", p.getMinecraftUsername());
 			jsonObject.put("discordID", p.getDiscordID());
 			jsonObject.put("resetCount", p.getResetCount());
+			jsonObject.put("worldCount", p.getWorldCount());
+			jsonObject.put("lastWorldJoined", p.getLastWorld());
 			
 			jsonArray.add(jsonObject);
 		}

@@ -150,6 +150,9 @@ public class Main {
 				case "listPlayers":
 					channel.sendMessage("```" + players.listPlayers() + "```");
 					break;
+				case "listRatios":
+					channel.sendMessage("```" + players.listRatios() + "```");
+					break;
 				case "listAttempts":
 					String output = "";
 					int count = 0;
@@ -235,6 +238,17 @@ public class Main {
 		        minecraftChatChannel.sendMessage(discordMessage);
 		    }
 		    
+		    ArrayList<String> onlinePlayers = ApexHosting.getOnlinePlayers();
+		    
+		    for (String p : onlinePlayers) {
+		    	Player currPlayer = players.findPlayerWM(p);
+		    	if (currPlayer.getLastWorld() != attempts.currentAttemptNumber()) {
+		    		currPlayer.addWorld();
+		    		currPlayer.setLastWorld(attempts.currentAttemptNumber());
+		    		players.saveToFile();
+		    	}
+		    }
+		    		    
 			System.out.println("[LOOP]");
 		    Thread.sleep(5000);
 		}
@@ -288,7 +302,7 @@ public class Main {
 				server.removeRoleFromUser(discordKillerOld, runSerialKillerRole);
 				discordKillerNew = api.getUserById(players.getHighestMurderer().getDiscordID()).get();
 				server.addRoleToUser(discordKillerNew, runSerialKillerRole);
-				botAnnouncementChannel.sendMessage("... and with that " + discordKillerNew.getMentionTag() + " has overtaken " + discordKillerOld.getMentionTag() + " as " + runSerialKillerRole.getMentionTag() + "!");
+				botAnnouncementChannel.sendMessage("...and with that " + discordKillerNew.getMentionTag() + " has overtaken " + discordKillerOld.getMentionTag() + " as " + runSerialKillerRole.getMentionTag() + "!");
 			} catch (InterruptedException | ExecutionException e) {
 				e.printStackTrace();
 			}

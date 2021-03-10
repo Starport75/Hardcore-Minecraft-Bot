@@ -8,17 +8,23 @@ public class Player implements Comparable<Player> {
 	private String minecraftUsername;
 	private long discordID;
 	private long resetCount;
+	private long worldCount;
+	private long lastWorldJoined;
 	
 	public Player(String nMinecraftUsername, long nDiscordID) {
 		minecraftUsername = nMinecraftUsername;
 		discordID = nDiscordID;
 		resetCount = 0;
+		worldCount = 0;
+		lastWorldJoined = -1;
 	}
 	
-	public Player(String nMinecraftUsername, long nDiscordID, long resets) {
+	public Player(String nMinecraftUsername, long nDiscordID, long resets, long worlds, long lastWorld) {
 		minecraftUsername = nMinecraftUsername;
 		discordID = nDiscordID;
 		resetCount = resets;
+		worldCount = worlds;
+		lastWorldJoined = lastWorld;
 	}
 	
 	@Override
@@ -43,8 +49,31 @@ public class Player implements Comparable<Player> {
 		return resetCount;
 	}
 	
+	public long getWorldCount() {
+		return worldCount;
+	}
+	
+	public long getLastWorld() {
+		return lastWorldJoined;
+	}
+	
 	public void addReset() {
 		resetCount++;
+	}
+	
+	public void addWorld() {
+		worldCount++;
+	}
+	
+	public void setLastWorld(long lastWorld) {
+		lastWorldJoined = lastWorld;
+	}
+	
+	public int getRatioPercent() {
+		if(worldCount != 0) {
+			return (int)((double)(resetCount) / (double)(worldCount) * 100);
+		}
+		return -1;
 	}
 	
 	// instead of passing the freaking api in, make a discordAPI class or something and let functions call that
