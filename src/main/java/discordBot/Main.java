@@ -207,9 +207,9 @@ public class Main {
 
 			System.out.println("Getting possible deaths.");
 			String[] possibleDeath = ApexHosting.getPossibleDeath();
-			String murderer = possibleDeath[0];
-			String cause = possibleDeath[1];
 		    if (possibleDeath != null) {
+		    	String murderer = possibleDeath[0];
+				String cause = possibleDeath[1];
 		    	ArrayList<String> onlinePlayers = ApexHosting.getOnlinePlayers();
 			    for (String p : onlinePlayers) {
 			    	if (cause.contains(p)) {
