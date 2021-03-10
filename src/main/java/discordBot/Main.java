@@ -207,8 +207,18 @@ public class Main {
 
 			System.out.println("Getting possible deaths.");
 			String[] possibleDeath = ApexHosting.getPossibleDeath();
+			String murderer = possibleDeath[0];
+			String cause = possibleDeath[1];
 		    if (possibleDeath != null) {
-		        runDeath(possibleDeath[0], possibleDeath[1]);
+		    	ArrayList<String> onlinePlayers = ApexHosting.getOnlinePlayers();
+			    for (String p : onlinePlayers) {
+			    	if (cause.contains(p)) {
+			    		cause = " killed " + murderer + " in cold blood!";
+			    		murderer = p;
+			    	}
+			    	break;
+			    }
+		        runDeath(murderer, cause);
 		    }
 
 		    System.out.println("Getting chat messages.");
