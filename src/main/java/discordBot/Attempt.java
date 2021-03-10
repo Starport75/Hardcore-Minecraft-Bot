@@ -58,7 +58,7 @@ public class Attempt {
 		Calendar calendar = Calendar.getInstance();
 		calendar.setTimeInMillis(millis);
 		
-		String fString = "%d/%d at %d:%d";
+		String fString = "%d/%d at %02d:%02d";
 		return String.format(fString, calendar.get(Calendar.MONTH) + 1, calendar.get(Calendar.DAY_OF_MONTH), calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE));
 	}
 	
