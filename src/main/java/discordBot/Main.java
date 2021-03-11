@@ -69,6 +69,8 @@ public class Main {
 		runSerialKillerRole = api.getRoleById(runSerialKillerRoleID).get();
 		runAngelRole = api.getRoleById(runAngelRoleID).get();
 		
+		ArrayList<String> oldOnlinePlayers = null;
+				
 		api.addMessageCreateListener(event -> {
 			Message message = event.getMessage();
 			String messageContent = message.getContent().strip();
@@ -213,7 +215,7 @@ public class Main {
 		    	ArrayList<String> onlinePlayers = ApexHosting.getOnlinePlayers();
 			    for (String p : onlinePlayers) {
 			    	if (cause.contains(p)) {
-			    		cause = " killed " + murderer + " in cold blood!";
+			    		cause = "killed " + murderer + " in cold blood";
 			    		murderer = p;
 			    	}
 			    	break;
@@ -257,6 +259,28 @@ public class Main {
 		    		currPlayer.setLastWorld(attempts.currentAttemptNumber());
 		    		players.saveToFile();
 		    	}
+		    }
+		    
+		    
+		    if (oldOnlinePlayers == null) {
+		    	oldOnlinePlayers = ApexHosting.getOnlinePlayers();
+		    	System.out.println("Online Players has been set");
+		    }
+		    if (!oldOnlinePlayers.equals(ApexHosting.getOnlinePlayers())) {
+		    	ArrayList<String> newOnlinePlayers = ApexHosting.getOnlinePlayers();
+		    	ArrayList<String> justLeft = oldOnlinePlayers;
+		    	justLeft.removeAll(newOnlinePlayers);
+		    	System.out.println(justLeft);
+		    	for (String p : justLeft) {
+		    		minecraftChatChannel.sendMessage("*" + p + " has left the game*");
+		    	}
+		    	ArrayList<String> justJoined = newOnlinePlayers;
+		    	justJoined.removeAll(oldOnlinePlayers);
+		    	for (String p : justJoined) {
+		    		minecraftChatChannel.sendMessage("*" + p + " has joined the game*");
+		    	}
+		    	oldOnlinePlayers = newOnlinePlayers;
+
 		    }
 		    		    
 			System.out.println("[LOOP]");
