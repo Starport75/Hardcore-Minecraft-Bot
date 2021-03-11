@@ -264,18 +264,24 @@ public class Main {
 		    
 		    if (oldOnlinePlayers == null) {
 		    	oldOnlinePlayers = ApexHosting.getOnlinePlayers();
+
 		    	System.out.println("Online Players has been set");
 		    }
 		    if (!oldOnlinePlayers.equals(ApexHosting.getOnlinePlayers())) {
 		    	ArrayList<String> newOnlinePlayers = ApexHosting.getOnlinePlayers();
-		    	ArrayList<String> justLeft = oldOnlinePlayers;
+		    	
+		    	ArrayList<String> justLeft = new ArrayList<String>(oldOnlinePlayers);
+		    	System.out.println("Just Left pre= " + justLeft);
 		    	justLeft.removeAll(newOnlinePlayers);
-		    	System.out.println(justLeft);
+		    	System.out.println("Just Left post= " + justLeft);
 		    	for (String p : justLeft) {
 		    		minecraftChatChannel.sendMessage("*" + p + " has left the game*");
 		    	}
-		    	ArrayList<String> justJoined = newOnlinePlayers;
+		    	ArrayList<String> justJoined = new ArrayList<String>(newOnlinePlayers);
+		    	System.out.println("pre joined = " + justJoined + " - oldOnline = " + oldOnlinePlayers);
 		    	justJoined.removeAll(oldOnlinePlayers);
+		    	System.out.println("post joined = " + justJoined);
+
 		    	for (String p : justJoined) {
 		    		minecraftChatChannel.sendMessage("*" + p + " has joined the game*");
 		    	}
