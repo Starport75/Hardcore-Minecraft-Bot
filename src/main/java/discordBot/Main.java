@@ -20,6 +20,7 @@ import org.javacord.api.entity.server.Server;
 import org.javacord.api.entity.user.User;
 
 import apexHostingAPI.ApexHosting;
+import minecraftServer.MinecraftServer;
 
 public class Main {
 	private static String token;
@@ -53,7 +54,8 @@ public class Main {
 		api = new DiscordApiBuilder().setToken(token).login().join();
 		System.out.println(token);
 		
-		ApexHosting.main();
+		MinecraftServer minecraftServer = new MinecraftServer();
+		minecraftServer.startServer();
 		
 		// Print the invite url of your bot
 		System.out.println("You can invite the bot by using the following url: " + api.createBotInvite());
@@ -202,13 +204,10 @@ public class Main {
 		});
 
 		while (true) {
-			System.out.println("Updating console.");
-			ApexHosting.updateConsole();
-			System.out.println("Updating chat.");
-			ApexHosting.updateChat();
+			ArrayList<String> log = minecraftServer.getLog();
 
 			System.out.println("Getting possible deaths.");
-			String[] possibleDeath = ApexHosting.getPossibleDeath();
+			String[] possibleDeath = minecraftServer.getPossibleDeath(log);
 		    if (possibleDeath != null) {
 		    	String murderer = possibleDeath[0];
 				String cause = possibleDeath[1];
@@ -224,7 +223,7 @@ public class Main {
 		    }
 
 		    System.out.println("Getting chat messages.");
-		    ArrayList<String[]> chatMessages = ApexHosting.getChatMessages();
+		    ArrayList<String[]> chatMessages = minecraftServer.getChatMessages(log);
 		    if (chatMessages.size() > 0) {
 		    	String discordMessage = "";
 		        for (String[] message : chatMessages) {
@@ -251,7 +250,6 @@ public class Main {
 		    }
 		    
 		    ArrayList<String> onlinePlayers = ApexHosting.getOnlinePlayers();
-		    
 		    for (String p : onlinePlayers) {
 		    	Player currPlayer = players.findPlayerWM(p);
 		    	if (currPlayer.getLastWorld() != attempts.currentAttemptNumber()) {
@@ -347,8 +345,5 @@ public class Main {
 				e.printStackTrace();
 			}
         }
-        
-        ApexHosting.clearConsole();
-        ApexHosting.clearChat();
 	}
 }
